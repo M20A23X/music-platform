@@ -23,7 +23,8 @@ const Player = () => {
 
     const setAudio = () => {
         if (active) {
-            audio.src = 'http://localhost:5000/' + active.audio
+            const base = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}/api` : process.env.API_URL;
+            audio.src = base+ '/' + active.audio
             audio.volume = volume / 100
             audio.onloadedmetadata = () => {
                 setDuration(Math.ceil(audio.duration))

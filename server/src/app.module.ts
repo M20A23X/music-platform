@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { TrackModule } from './track/track.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { FileModule } from './file/file.module';
@@ -7,12 +8,11 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
     ServeStaticModule.forRoot({ rootPath: path.resolve(__dirname, 'static') }),
-    MongooseModule.forRoot(
-      'mongodb+srv://admin:123@cloud-storage.jr11v.mongodb.net/?retryWrites=true&w=majority&appName=cloud-storage',
-    ),
+    MongooseModule.forRoot(process.env.DB_URL || ''),
     TrackModule,
     FileModule,
   ],
 })
-export class AppModule {}
+export class AppModule { }
